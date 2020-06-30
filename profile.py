@@ -1,4 +1,4 @@
-"""This profile sets up an n-node cluster of machine along with a NFS server. The NFS server uses a long term dataset that is persistent across experiments and is mounted at `/nfs` on all nodes.
+"""This profile sets up an n-node cluster of machines along with an NFS server. The NFS server uses a long term dataset that is persistent across experiments and is mounted at `/nfs` on all nodes.
 
 Instructions:
 Click on any node in the topology and choose the `shell` menu item. Your shared NFS directory is mounted at `/nfs` on all nodes."""
@@ -29,13 +29,13 @@ pc.defineParameter("ext_uri", "External Dataset URI", portal.ParameterType.STRIN
 params = pc.bindParameters()
 
 # Setting the required NFS network options.
-nfsLan = request.LAN("nfs-lan")
+nfsLan = request.LAN("nfsLan")
 nfsLan.best_effort = True
 nfsLan.vlan_tagging = True
 nfsLan.link_multiplexing = True
 
 # Defining the NFS server.
-nfsServer = request.RawPC("nfs-server")
+nfsServer = request.RawPC("nfs")
 nfsServer.disk_image = params.os_image
 
 # Attaching the NFS server to LAN.
