@@ -72,5 +72,11 @@ for i in xrange(params.num_nodes):
     # Defining the initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
 
+    # Mounting a temporary block storage.
+    if params.storage_size:
+        bsname = "bs%d" % i
+        bs = node.Blockstore(bsname, "/mydata")
+        bs.size = str(params.storage_size) + "GB"
+
 # Printing RSpec to the enclosing page.
 pc.printRequestRSpec(request)
