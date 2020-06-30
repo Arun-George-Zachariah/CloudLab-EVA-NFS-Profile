@@ -1,7 +1,7 @@
-"""This profile sets up an n-node cluster of machine along with a NFS server. The NFS server uses a long term dataset that is persistent across experiments and is mounted at `/nfs_data` on all nodes.
+"""This profile sets up an n-node cluster of machine along with a NFS server. The NFS server uses a long term dataset that is persistent across experiments and is mounted at `/nfs` on all nodes.
 
 Instructions:
-Click on any node in the topology and choose the `shell` menu item. Your shared NFS directory is mounted at `/nfs_data` on all nodes."""
+Click on any node in the topology and choose the `shell` menu item. Your shared NFS directory is mounted at `/nfs` on all nodes."""
 
 # Geni imports
 import geni.portal as portal
@@ -29,13 +29,13 @@ pc.defineParameter("ext_uri", "External Dataset URI", portal.ParameterType.STRIN
 params = pc.bindParameters()
 
 # Setting the required NFS network options.
-nfsLan = request.LAN("nfs_lan")
+nfsLan = request.LAN("nfs-lan")
 nfsLan.best_effort = True
 nfsLan.vlan_tagging = True
 nfsLan.link_multiplexing = True
 
 # Defining the NFS server.
-nfsServer = request.RawPC("nfs_server")
+nfsServer = request.RawPC("nfs-server")
 nfsServer.disk_image = params.os_image
 
 # Attaching the NFS server to LAN.
@@ -45,7 +45,7 @@ nfsLan.addInterface(nfsServer.addInterface())
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
 
 # Defining the node that represents the ISCSI device where the dataset resides
-dsnode = request.RemoteBlockstore("dsnode", "/nfs_data")
+dsnode = request.RemoteBlockstore("dsnode", "/nfs")
 dsnode.dataset = params.ext_uri
 
 # Defining the link between the NFS server and the ISCSI device that holds the dataset
