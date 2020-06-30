@@ -66,6 +66,10 @@ for i in xrange(params.num_nodes):
     # Specifying the disk image.
     node.disk_image = params.os_image
 
+    # Specifying the hardware type
+    if params.node_type:
+        node.hardware_type = params.node_type
+
     # Adding the NFS LAN interface
     nfsLan.addInterface(node.addInterface())
 
