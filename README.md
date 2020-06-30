@@ -8,4 +8,6 @@ A [ClouldLab](https://cloudlab.us/) experiment profile, forked from [nfs-dataset
 3) Paste the Repo URL and confirm.
 
 ## Topology Preview
-![Topology Preview](Topology_Preview.png)
+<p align="center">
+  <img src="Topology_Preview.png" />
+</p>
