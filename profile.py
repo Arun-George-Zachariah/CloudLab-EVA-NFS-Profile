@@ -1,4 +1,4 @@
-"""This profile sets up an n-node cluster of machines along with an NFS server. The NFS server uses a long term dataset that is persistent across experiments that is mounted at `/nfs` on all nodes along with a temporary block storage mounted at `/nfs` across all nodes.
+"""This profile sets up an n-node cluster of machines along with an NFS server. The NFS server uses a long term dataset that is persistent across experiments that is mounted at `/nfs` on all nodes along with a temporary block storage mounted at `/mydata` across all nodes.
 
 Instructions:
 Click on any node in the topology and choose the `shell` menu item. Your shared NFS directory is mounted at `/nfs` on all nodes."""
