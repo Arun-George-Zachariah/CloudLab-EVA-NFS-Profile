@@ -26,7 +26,12 @@ pc.defineParameter("os_image", "Select OS image", portal.ParameterType.IMAGE, im
 pc.defineParameter("node_type", "Hardware type of all nodes", portal.ParameterType.NODETYPE, "", longDescription="A specific hardware type to use for each node.")
 pc.defineParameter("storage_size", "Storage Size (GB)", portal.ParameterType.INTEGER, 250)
 pc.defineParameter("ext_uri", "External Dataset URI", portal.ParameterType.STRING, "")
+pc.defineParameter("agree", "I agree to use only deidentified data", portal.ParameterType.BOOLEAN, True, longDescription="By checking the box, I agree to store and process only deidentified data on this node.")
 params = pc.bindParameters()
+
+# Performing the validations.
+if not params.agree or params.num_nodes < 2:
+    pc.reportError(portal.ParameterError("Cannot proceed with the experiment.", [params.agree, params.num_nodes]), True)
 
 # Setting the required NFS network options.
 nfsLan = request.LAN("nfsLan")
@@ -81,6 +86,10 @@ for i in xrange(params.num_nodes):
         bsname = "bs%d" % i
         bs = node.Blockstore(bsname, "/mydata")
         bs.size = str(params.storage_size) + "GB"
+        
+        # Changing permissions of the block storage.
+        bs_perm_cmd = "sudo chown " + params.userName + " /mydata"
+        node.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
 
 # Printing RSpec to the enclosing page.
 pc.printRequestRSpec(request)
