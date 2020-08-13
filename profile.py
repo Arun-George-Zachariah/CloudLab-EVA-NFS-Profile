@@ -21,6 +21,7 @@ imageList = [
 ]
 
 # Defining the input parameters.
+pc.defineParameter("userName", "User name",portal.ParameterType.STRING, "", longDescription="Your CloudLab user name.")
 pc.defineParameter("num_nodes", "Number of nodes", portal.ParameterType.INTEGER, 4)
 pc.defineParameter("os_image", "Select OS image", portal.ParameterType.IMAGE, imageList[2], imageList)
 pc.defineParameter("node_type", "Hardware type of all nodes", portal.ParameterType.NODETYPE, "", longDescription="A specific hardware type to use for each node.")
