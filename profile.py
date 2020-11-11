@@ -25,7 +25,6 @@ pc.defineParameter("userName", "User name",portal.ParameterType.STRING, "", long
 pc.defineParameter("num_nodes", "Number of nodes", portal.ParameterType.INTEGER, 4)
 pc.defineParameter("os_image", "Select OS image", portal.ParameterType.IMAGE, imageList[2], imageList)
 pc.defineParameter("node_type", "Hardware type of all nodes", portal.ParameterType.NODETYPE, "", longDescription="A specific hardware type to use for each node.")
-pc.defineParameter("storage_size", "Storage Size (GB)", portal.ParameterType.INTEGER, 250)
 pc.defineParameter("ext_uri", "External Dataset URI", portal.ParameterType.STRING, "")
 pc.defineParameter("agree", "I agree to use only deidentified data", portal.ParameterType.BOOLEAN, True, longDescription="By checking the box, I agree to store and process only deidentified data on this node.")
 params = pc.bindParameters()
@@ -83,14 +82,13 @@ for i in xrange(params.num_nodes):
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
 
     # Mounting a temporary block storage.
-    if params.storage_size:
-        bsname = "bs%d" % i
-        bs = node.Blockstore(bsname, "/mydata")
-        bs.size = str(params.storage_size) + "GB"
+    bsname = "bs%d" % i
+    bs = node.Blockstore(bsname, "/mydata")
+    bs.size = "0GB"
         
-        # Changing permissions of the block storage.
-        bs_perm_cmd = "sudo chown " + params.userName + " /mydata"
-        node.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
+    # Changing permissions of the block storage.
+    bs_perm_cmd = "sudo chown " + params.userName + " /mydata"
+    node.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
 
 # Printing RSpec to the enclosing page.
 pc.printRequestRSpec(request)
