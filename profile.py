@@ -43,19 +43,20 @@ nfsLan.link_multiplexing = True
 nfsServer = request.RawPC("vm0")
 nfsServer.disk_image = params.os_image
 
-# Attaching the NFS server to LAN.
-nfsLan.addInterface(nfsServer.addInterface())
-
-# Defining the initialization script for the server
-nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
-
 # Mounting a temporary block storage.
-bs = nfsServer.Blockstore("bs0", "/mydata")
+bsname = "bs0"
+bs = nfsServer.Blockstore(bsname, "/mydata")
 bs.size = "0GB"
     
 # Changing permissions of the block storage.
 bs_perm_cmd = "sudo chown " + params.userName + " /mydata"
 nfsServer.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
+
+# Attaching the NFS server to LAN.
+nfsLan.addInterface(nfsServer.addInterface())
+
+# Defining the initialization script for the server
+nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
 
 # Defining the node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "/nfs")
@@ -90,7 +91,8 @@ for i in xrange(1, params.num_nodes):
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
 
     # Mounting a temporary block storage.
-    bs = node.Blockstore("bs%d" % i, "/mydata")
+    bsname = "bs%d" % i
+    bs = node.Blockstore(bsname, "/mydata")
     bs.size = "0GB"
         
     # Changing permissions of the block storage.
