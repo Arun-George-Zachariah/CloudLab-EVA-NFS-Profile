@@ -40,7 +40,7 @@ nfsLan.vlan_tagging = True
 nfsLan.link_multiplexing = True
 
 # Defining the NFS server.
-nfsServer = request.RawPC("vm0")
+nfsServer = request.RawPC("nfs")
 nfsServer.disk_image = params.os_image
 
 # Attaching the NFS server to LAN.
@@ -64,7 +64,7 @@ dslink.vlan_tagging = True
 dslink.link_multiplexing = True
 
 # Dynamically creating the nodes.
-for i in xrange(1, params.num_nodes):
+for i in xrange(params.num_nodes):
     # Adding a raw PC to the request
     node = request.RawPC("vm%d" % i)
 
