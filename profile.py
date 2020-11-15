@@ -45,12 +45,12 @@ nfsServer.disk_image = params.os_image
 
 # Mounting a temporary block storage.
 bsname = "bs0"
-bs = nfsServer.Blockstore(bsname, "/mydata")
+bs = node.Blockstore(bsname, "/mydata")
 bs.size = "0GB"
     
 # Changing permissions of the block storage.
 bs_perm_cmd = "sudo chown " + params.userName + " /mydata"
-nfsServer.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
+node.addService(pg.Execute(shell="bash", command=bs_perm_cmd))
 
 # Attaching the NFS server to LAN.
 nfsLan.addInterface(nfsServer.addInterface())
